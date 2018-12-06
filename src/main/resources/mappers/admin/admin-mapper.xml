@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.red.star.wechat.work.site.admin.mapper.AdminMapper">
+
+    <resultMap id="ResultMap" type="com.red.star.wechat.work.entity.Admin">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="employeeId" column="employee_id"/>
+        <result property="bRegionCode" column="b_region_code"/>
+        <result property="sRegionCode" column="s_region_code"/>
+        <result property="mallCode" column="mall_code"/>
+        <result property="merchantId" column="merchant_id"/>
+        <result property="enumValue" column="enum_value"/>
+        <result property="name" column="name"/>
+        <collection property="roles" ofType="com.red.star.wechat.work.entity.Role">
+            <id property="id" column="rid"/>
+            <result property="name" column="rname"/>
+            <collection property="resources" ofType="com.red.star.wechat.work.entity.Resource">
+                <id property="id" column="resid"/>
+                <result property="address" column="resaddress"/>
+                <result property="pid" column="respid"/>
+                <result property="type" column="restype"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <select id="findAdminByUsername" parameterType="String" resultMap="ResultMap">
+        SELECT u.*, r.id rid, r.name rname, res.id resid, res.address resaddress, res.pid respid, res.type restype
+        from t_admin u
+                 INNER JOIN t_admin_role m ON u.id = m.admin_id
+                 INNER JOIN t_role r ON m.role_id = r.id
+                 INNER JOIN t_role_resource rr ON r.id = rr.role_id
+                 INNER JOIN t_resource res ON rr.resource_id = res.id
+        WHERE username = #{username}
+    </select>
+
+    <select id="findAll" resultMap="ResultMap">
+        SELECT u.*, r.id rid, r.name rname
+        from t_admin u
+                 INNER JOIN t_admin_role m ON u.id = m.admin_id
+                 INNER JOIN t_role r ON m.role_id = r.id
+    </select>
+
+    <select id="findAdminByEmployeeId" resultType="com.red.star.wechat.work.entity.Admin">
+        SELECT *
+        FROM t_admin
+        WHERE employee_id = #{employeeId}
+    </select>
+
+    <insert id="addAdminAndRole">
+        INSERT INTO t_admin_role (admin_id, role_id)
+        VALUES
+            (#{id}, #{roleId});
+    </insert>
+
+    <update id="updateAdmin">
+        UPDATE t_admin
+        SET
+            username      = #{username},
+            password      = #{password},
+            employee_id   = #{employeeId},
+            b_region_code = #{bRegionCode},
+            s_region_code = #{sRegionCode},
+            mall_code     = #{mallCode},
+            merchant_id   = #{merchantId},
+            update_time   = NOW(),
+            name          = #{name}
+        WHERE
+            (`id` = #{id});
+
+    </update>
+
+    <delete id="deleteAdminAndRole">
+        DELETE
+        FROM
+            t_admin_role
+        WHERE
+            admin_id = #{id}
+    </delete>
+
+    <delete id="deleteAdminById">
+        DELETE
+        FROM
+            t_admin
+        WHERE
+            id = #{id}
+
+    </delete>
+
+    <select id="queryAllAdminByEnumValue" resultType="com.red.star.wechat.work.entity.Admin">
+
+        SELECT DISTINCT enum_value
+        FROM t_admin
+
+    </select>
+
+    <select id="findAdminByUsernameAValue" resultMap="ResultMap">
+        SELECT u.*, r.id rid, r.name rname, res.id resid, res.address resaddress, res.pid respid, res.type restype
+        from t_admin u
+                 INNER JOIN t_admin_role m ON u.id = m.admin_id
+                 INNER JOIN t_role r ON m.role_id = r.id
+                 INNER JOIN t_role_resource rr ON r.id = rr.role_id
+                 INNER JOIN t_resource res ON rr.resource_id = res.id
+        WHERE username = #{username}
+          and u.enum_value = #{enumValue}
+    </select>
+
+
+    <select id="findRoleSetByAdminId" parameterType="Integer" resultType="com.red.star.wechat.work.entity.Role">
+        SELECT t1.*
+        from t_role t1
+        WHERE t1.id in (
+            select t2.role_id
+            from t_admin_role t2
+            where t2.admin_id = #{adminId}
+        )
+    </select>
+
+
+    <select id="findRoleSetByEnumValue" resultType="com.red.star.wechat.work.entity.Role" parameterType="List">
+        select * from t_role
+        where
+        <if test="list!=null and list.size()>0">
+            enum_value in
+            <foreach collection="list" item="enumValueList" open="(" separator="," close=")">
+                #{enumValueList}
+            </foreach>
+        </if>
+    </select>
+</mapper>

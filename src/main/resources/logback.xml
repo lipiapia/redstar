@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="30 seconds">
+    <!-- Console Appender -->
+    <appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <layout>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p]-[%t]-[%C.%M\(%F:%L\)] %m%n</pattern>
+        </layout>
+    </appender>
+
+    <!-- Error File Appender -->
+    <appender name="errorFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/error/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>12</maxHistory><!-- 12 = 12 months -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p]-[%t]-[%C.%M\(%F:%L\)] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- Debug File Appender -->
+    <appender name="debugFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/debug.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/debug/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>12</maxHistory><!-- 12 = 12 months -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p]-[%t]-[%C.%M\(%F:%L\)] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- Debug File Appender -->
+    <appender name="infoFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/info.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/info/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>12</maxHistory><!-- 12 = 12 months -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p]-[%t]-[%C.%M\(%F:%L\)] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- WARN File Appender -->
+    <appender name="warnFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/warn.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/warn/%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>12</maxHistory><!-- 12 = 12 months -->
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%p]-[%t]-[%C.%M\(%F:%L\)] %m%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>WARN</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="logStashAppender" class="net.logstash.logback.appender.LogstashSocketAppender">
+        <host>127.0.0.1</host>
+        <port>4569</port>
+    </appender>
+
+    <logger name="com.red.star.macalline" level="INFO">
+        <appender-ref ref="logStashAppender"/>
+    </logger>
+
+    <!-- S 开发控制台SQL -->
+    <logger name="com.red.star.wechat.work" level="DEBUG"/>
+    <!-- E 开发控制台SQL -->
+    <root level="error">
+        <appender-ref ref="consoleAppender"/>
+        <appender-ref ref="errorFileAppender"/>
+        <appender-ref ref="debugFileAppender"/>
+        <appender-ref ref="infoFileAppender"/>
+        <appender-ref ref="warnFileAppender"/>
+    </root>
+</configuration>

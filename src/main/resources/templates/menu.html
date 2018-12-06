@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8">
+    <title>菜单管理</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <style>
+        /*按钮*/
+        .icon_div {
+            display: inline-block;
+            height: 25px;
+            width: 35px;
+        }
+
+        .icon_div a {
+            display: inline-block;
+            width: 27px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /*end--按钮*/
+
+        /*ztree表格*/
+        .ztree {
+            padding: 0;
+            border: 2px solid #CDD6D5;
+        }
+
+        .ztree li a {
+            vertical-align: middle;
+            height: 30px;
+        }
+
+        .ztree li > a {
+            width: 100%;
+        }
+
+        .ztree li > a,
+        .ztree li a.curSelectedNode {
+            padding-top: 0px;
+            background: none;
+            height: auto;
+            border: none;
+            cursor: default;
+            opacity: 1;
+        }
+
+        .ztree li ul {
+            padding-left: 0px
+        }
+
+        .ztree div.diy span {
+            line-height: 30px;
+            vertical-align: middle;
+        }
+
+        .ztree div.diy {
+            height: 100%;
+            width: 20%;
+            line-height: 30px;
+            border-top: 1px dotted #ccc;
+            border-left: 1px solid #eeeeee;
+            text-align: center;
+            display: inline-block;
+            box-sizing: border-box;
+            color: #6c6c6c;
+            font-family: "SimSun";
+            font-size: 12px;
+            overflow: hidden;
+        }
+
+        .ztree div.diy:first-child {
+            text-align: left;
+            text-indent: 10px;
+            border-left: none;
+        }
+
+        .ztree .head {
+            background: #5787EB;
+        }
+
+        .ztree .head div.diy {
+            border-top: none;
+            border-right: 1px solid #CDD2D4;
+            color: #fff;
+            font-family: "Microsoft YaHei";
+            font-size: 14px;
+        }
+
+        /*end--ztree表格*/
+    </style>
+    <section class="content-header">
+        <h1>
+            菜单管理
+        </h1>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="portlet light bordered" style="width:auto;">
+                    <div class="portlet-body">
+                        <div class="table-toolbar">
+                            <form class="form-horizontal" method="post" id="filter_form">
+                                <div class="form-group">
+                                </div>
+                                <div class="form-group">
+                                </div>
+                            </form>
+                        </div>
+                        <div id="sample_1_wrapper" class="dataTables_wrapper no-footer" style="margin-top: -50px;">
+                            <table class="table table-striped table-bordered table-hover" id="initTables"
+                                   style="word-break:break-all;" width="100%">
+                                <thead>
+                                <tr>
+                                    <!--设置第一列为序号列(datatable自动生成)-->
+                                    <th style="width: 8%;">序号</th>
+                                    <th style="width: 10%">名称</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <table class="table table-striped table-bordered table-hover"
+                                   style="word-break:break-all;" width="100%">
+                                <thead>
+                                <div class="layer">
+                                    <div id="tableMain">
+                                        <ul id="dataTree" class="ztree">
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="starModal" class="modal fade" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title">新增模板</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="portlet-body form">
+                                        <form class="form-horizontal" role="form" id="bannertemplateformid"
+                                              enctype="multipart/form-data"
+                                              method="post">
+                                            <div class="form-body">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">模板名称:</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control"
+                                                               placeholder="请填写模板名称"
+                                                               data-rule="required(请填写模板名称)|focus"
+                                                               name="name" id="omsCode">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">上传附件:</label>
+                                                    <div class="col-sm-7">
+                                                    <span class="btn btn-info fileinput-button">
+                                                        <span>选择文件</span>
+                                                        <i class="fa fa-plus"></i>
+                                                        <input type="file" name="file" id="file"
+                                                               accept=".rar,.RAR,.zip,.ZIP"
+                                                               data-rule="required(请选择文件)|focus">
+                                                    </span>
+                                                        <button type="button" id="uploadId" class="btn btn-info"
+                                                                onclick="upload()">上传
+                                                        </button>
+                                                        <input type="text" id="urlId" name="url" hidden/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></label>
+                                                    <div class="col-sm-7">
+                                                        <span>文件格式：rar、zip</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></label>
+                                                    <div class="col-sm-7">
+                                                        <span id="aim"></span><span id="tipid" hidden
+                                                                                    style="color: red">请上传文件</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">备注:</label>
+                                                    <div class="col-sm-7">
+                                                    <textarea type="text" class="form-control" name="remark"
+                                                              id="remarkid"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer" style="text-align: center">
+                                                <button type="submit" class="btn btn-success" id="save">保存</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <link href="/plugins/ztree/css/zTreeStyle.css" rel="stylesheet">
+    <script src="/plugins/ztree/js/jquery.ztree.all.min.js"></script>
+    <script src="/appjs/sys/menu/menu.js"></script>
+</div>
+</body>
+</html>

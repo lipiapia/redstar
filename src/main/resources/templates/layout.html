@@ -1,0 +1,227 @@
+﻿<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>红星美凯龙-小程序管理系统</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/bower_components/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/distcss/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="/distcss/css/skins/_all-skins.min.css">
+    <link href="/datatables/datatables.css" rel="stylesheet" type="text/css"/>
+    <link href="/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css"/>
+    <!--<link href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />-->
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Font -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+    <link href="/css/components.min.css" rel="stylesheet" id="style_components" type="text/css"/>
+    <link href="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="/assets/global/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="/css/lobibox/lobibox.min.css"/>
+    <link rel="stylesheet" href="/mload/jquery.mloading.css"/>
+    <!-- END THEME LAYOUT STYLES -->
+
+    <link rel="stylesheet" href="/custom/custom.css"/>
+
+    <link href="/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
+    <!--<script>-->
+    <!--createWebSocket();-->
+    <!--</script>-->
+</head>
+<!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
+<!-- the fixed layout is not compatible with sidebar-mini -->
+<body class="fixed sidebar-mini sidebar-mini-expand-feature skin-blue-light">
+
+<!-- Site wrapper -->
+<div class="wrapper">
+
+    <header class="main-header">
+        <!-- Logo -->
+        <a href="#" class="logo">
+            <!-- mini logo for sidebar mini 50x50 pixels -->
+            <span class="logo-mini"><b>MACALLINE</b></span>
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg"><b>红星美凯龙</b></span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <div class="navbar-custom-menu" style="margin-right: 20px;">
+                <ul class="nav navbar-nav">
+                    <!-- User Account: style can be found in dropdown.less -->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="/distcss/img/user2-160x160.jpg" class="user-image" alt="User Image">
+                            <span class="hidden-xs" th:if="${session!=null}" th:text="${session.name}">admin</span>
+                        </a>
+                        <ul class="dropdown-menu" style="width: 10px;background: #ecf0f5">
+                            <div class="pull-right">
+                                <a href="/logout.html" class="btn btn-default btn-flat">退出</a>
+                            </div>
+                            <!--</li>-->
+                        </ul>
+                    </li>
+                    <!-- Control Sidebar Toggle Button -->
+                    <!--<li>-->
+                    <!--<a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!-- =============================================== -->
+
+    <!-- Left side column. contains the sidebar -->
+    <aside class="main-sidebar">
+        <section class="sidebar">
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="/distcss/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                </div>
+                <div class="pull-left info">
+                    <p th:if="${session!=null}" th:text="${session.name}" style="margin-top:13px;">admin</p>
+                </div>
+            </div>
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">小程序功能模块</li>
+                <li th:each="menu:${session.menus}" class="treeview"
+                    th:classappend="${menu.checked==1}?'active':'null'">
+                    <a href="javascript:void(0)">
+                        <i class="fa fa-male"></i>
+                        <span th:text="${menu.name}"></span>
+                        <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                         </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li th:each="cmenu:${menu.childs}" th:classappend="${cmenu.checked==1}?'active':'null'">
+                            <a th:text="${cmenu.name}" th:href="${cmenu.address}"><i
+                                    class="fa fa-circle-o text-orange"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </aside>
+
+    <!-- =============================================== -->
+    <!-- jQuery 3 -->
+    <!--<script src="/bower_components/jquery/distcss/jquery.min.js"></script>-->
+    <script src="/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- SlimScroll -->
+    <script src="/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- FastClick -->
+    <script src="/bower_components/fastclick/lib/fastclick.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/distcss/js/adminlte.min.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="/distcss/js/demo.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <!--<script src="/datatables/datatables.min.js" type="text/javascript"></script>-->
+    <script src="/assets/global/scripts/app.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/moment.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js"
+            type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"
+            type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
+            type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"
+            type="text/javascript"></script>
+    <script src="/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/components-date-time-pickers.min.js?t=12" type="text/javascript"></script>
+    <script src="/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.js" type="text/javascript"></script>
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="/assets/pages/scripts/components-select2.min.js?t=342" type="text/javascript"></script>
+    <script src="/js/imgFileupload.js" type="text/javascript"></script>
+    <script src="/js/datatables.js" type="text/javascript"></script>
+    <script src="/js/date.format.js"></script>
+    <script src="/js/SMValidator.min.js"></script>
+    <script src="/css/lobibox/lobibox.min.js"></script>
+    <script src="/js/template-web.js"></script>
+    <script src="/mload/jquery.mloading.js"></script>
+    <script src="/js/websocket.js" type="text/javascript"></script>
+
+    <script src="/js/bootstrap-multiselect.js" type="text/javascript"></script>
+    <script src="/js/bootstrap-datetimepicker.js" type="text/javascript"></script>
+    <script src="/js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" layout:fragment="content">
+        <!--主操作界面-->
+    </div>
+    <!-- /.content-wrapper -->
+
+    <footer class="main-footer">
+        <div class="pull-right hidden-xs">
+        </div>
+        <strong>红星美凯龙</strong>-小程序管理系统
+    </footer>
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+        <!-- Create the tabs -->
+        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <!-- Home tab content -->
+            <div class="tab-pane" id="control-sidebar-home-tab">
+            </div>
+        </div>
+    </aside>
+    <!-- /.control-sidebar -->
+    <!-- Add the sidebar's background. This div must be placed
+         immediately after the control sidebar -->
+    <div class="control-sidebar-bg"></div>
+</div>
+<!-- ./wrapper -->
+
+</body>
+</html>

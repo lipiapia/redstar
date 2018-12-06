@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.red.star.wechat.work.site.admin.mapper.RoleMapper">
+
+    <resultMap id="ResultMap" type="com.red.star.wechat.work.entity.Role">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="address" column="address" />
+        <collection property="resources" ofType="com.red.star.wechat.work.entity.Resource">
+            <id property="id" column="resid" />
+            <result property="name" column="resname" />
+            <result property="address" column="resaddress" />
+            <result property="pid" column="pid"/>
+            <result property="type" column="type"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="ResultMap">
+        SELECT r.*, res.id resid, res.name resname, res.address resaddress from t_role r
+        INNER JOIN t_role_resource m ON r.id = m.role_id
+        INNER JOIN t_resource res ON m.resource_id = res.id
+    </select>
+
+    <select id="findResourceByRole" resultMap="ResultMap">
+        SELECT r.* ,res.id resid, res.name resname, res.address resaddress,res.pid respid,res.type restype FROM
+        t_role r INNER JOIN  t_role_resource m ON r.id = m.role_id
+        INNER JOIN t_resource res on m.resource_id = res.id WHERE r.id = #{id}
+
+    </select>
+
+    <select id="findAdminRoleById" resultType="com.red.star.wechat.work.entity.Role">
+        SELECT
+        tr.id,
+        tr.`name`
+        FROM
+        t_role tr
+        JOIN t_admin_role tar ON tr.id = tar.role_id
+        JOIN t_admin ta ON ta.id = tar.admin_id
+        WHERE
+        tar.admin_id = #{id}
+    </select>
+
+    <select id="findResourceByRoleId" resultType="com.red.star.wechat.work.entity.Resource">
+        SELECT res.* FROM
+        t_role r INNER JOIN  t_role_resource m ON r.id = m.role_id
+        INNER JOIN t_resource res on m.resource_id = res.id WHERE r.id = #{id}
+
+    </select>
+
+    <select id="deleteRoleResourceByRoleId">
+        DELETE FROM t_role_resource WHERE role_id =#{id}
+    </select>
+
+    <insert id="addRoleResource">
+        INSERT INTO t_role_resource (role_id,resource_id) VALUES (#{roleId},#{resourceId})
+    </insert>
+</mapper>

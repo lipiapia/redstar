@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.red.star.wechat.work.site.admin.mapper.ResourceMapper">
+
+    <resultMap id="ResultMap" type="com.red.star.wechat.work.entity.Resource">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <collection property="roles" ofType="com.red.star.wechat.work.entity.Role">
+            <id property="id" column="rid"/>
+            <result property="name" column="rname"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="ResultResourceMap" type="com.red.star.wechat.work.entity.MenuResource">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="address" column="address"/>
+        <collection property="childs" ofType="com.red.star.wechat.work.entity.MenuResource" column="id"
+                    select="selectChilds">
+            <id column="id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="address" property="address"/>
+        </collection>
+    </resultMap>
+
+    <select id="findAll" resultMap="ResultMap">
+        SELECT res.*, r.id rid, r.name rname
+        from t_resource res
+                 INNER JOIN t_role_resource m ON res.id = m.resource_id
+                 INNER JOIN t_role r ON m.role_id = r.id
+    </select>
+
+    <delete id="deleteRoleResourceByResourceId">
+        DELETE
+        FROM t_role_resource
+        WHERE resource_id = #{id}
+    </delete>
+
+    <select id="findResourceByUserId" resultMap="ResultResourceMap">
+        select tr.id,tr.name,tr.address,tr.pid
+        from t_resource tr
+        where tr.type = 0
+          and tr.pid = 0
+          and tr.id in (SELECT DISTINCT resource_id
+                        FROM t_role_resource
+                        where role_id in (select DISTINCT role_id from t_admin_role where admin_id = #{id}));
+    </select>
+
+    <select id="selectChilds" resultType="com.red.star.wechat.work.entity.MenuResource">
+        select tr.id,tr.name,tr.address,tr.pid
+        from t_resource tr
+        where tr.pid = #{id}
+    </select>
+</mapper>

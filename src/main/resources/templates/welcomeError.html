@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorator="layout">
+<head>
+    <meta charset="UTF-8">
+    <title>403</title>
+    <link href="../assets/pages/css/error.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="col-md-12 page-404">
+        <div class="number font-red"> 403</div>
+        <div class="details">
+            <h3>禁止访问</h3>
+            <p> 对不起，当前登录人非商场管理员
+                <br/>
+                <a th:href="@{/work/home.html}"> 返回首页 </a></p>
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
