@@ -38,4 +38,6 @@ public class Resource extends BaseEntity {
      */
     @Transient
     private Integer checked;
+
+    private Integer del;
 }

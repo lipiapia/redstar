@@ -12,4 +12,5 @@ import java.util.List;
 @Data
 public class MenuResource extends Resource {
     List<MenuResource> childs;
+    MenuResource parent;
 }

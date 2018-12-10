@@ -5,6 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <title>角色管理</title>
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/appjs/sys/role/jstree/style.min.css" />
+    <script src="/appjs/sys/role/jquery-3.3.1.min.js"></script>
+    <script src="/appjs/sys/role/jstree.min.js"></script>
 </head>
 <body>
 <div layout:fragment="content">
@@ -107,6 +111,42 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="roleModal" class="modal fade" style="display: none;">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                <h4 class="modal-title">分配权限</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="portlet-body form">
+                                        <form class="form-horizontal" role="form" id="allotpromissionid"
+                                              enctype="multipart/form-data"
+                                              method="post">
+                                            <div class="form-body">
+                                                <label class="col-sm-1 control-label"></label>
+                                                <div class="col-sm-3">
+                                                    <div id="menuTree"></div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer" style="text-align: center">
+                                                <button type="submit" class="btn btn-success" id="allot">确定</button>
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <script th:inline="javascript">
             var table;
@@ -130,7 +170,7 @@
                             // 修改
                             operate += "<a href='javascript:void(0)' onclick=editRole(" + row.id + ")>修改 </a>";
                             // 分配菜单
-                            operate += "<a href='javascript:void(0)' onclick=allotEnum(" + row.id + ")>分配菜单 </a>";
+                            operate += "<a href='javascript:void(0)' onclick=allotPromission(" + row.id + ")>分配权限 </a>";
                             return  operate;
                         }
                     }
@@ -144,6 +184,42 @@
 
             function editRole() {
                 $('#starModal').modal();
+            }
+            function allotPromission(id) {
+                $('#roleModal').modal();
+                $.ajax({
+                    url: "/sys/promission/queryallmenu.json",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "id": id
+                    },
+                    success: function (data, status) {
+                        if (status != "success") {
+                            return;
+                        }
+                        loadMenuTree(data);
+                    }, error: function (data) {
+                        Lobibox.notify('error', {
+                            msg: "出错啦:{status:" + data.status + "}",
+                            sound: false,
+                            delay: 1500
+                        });
+                    }
+                });
+            }
+
+            function loadMenuTree(menuTree) {
+                console.log(JSON.stringify(menuTree));
+                $('#menuTree').jstree({
+                    "plugins": ["wholerow", "checkbox", "types"],
+                    'core': {
+                        'data': menuTree
+                    },
+                    "checkbox": {
+                    }
+                });
+                $('#menuTree').jstree('open_all');
             }
 
             // 启用/禁用角色

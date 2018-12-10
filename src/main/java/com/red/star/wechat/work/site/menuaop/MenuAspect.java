@@ -16,7 +16,9 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
- * 返回菜单
+ * @author liucancan
+ * @description 动态菜单
+ * @date 2018/12/7
  */
 @Aspect
 @Component

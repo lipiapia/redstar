@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * @description: 权限控制器
@@ -73,5 +74,17 @@ public class PromissionController {
         }else{
             return new ResponseEntity(false, HttpStatus.OK);
         }
+    }
+
+    /**
+     * @param roleId
+     * @description: 查询所有的菜单列表
+     * @author: lijing
+     * @create: 2018-12-10 14:20
+     */
+    @RequestMapping(value = "/queryallmenu")
+    public Map qyeryAllMenu(Integer roleId) {
+        //roleService.queryAllMenu(roleId);
+        return null;
     }
 }
